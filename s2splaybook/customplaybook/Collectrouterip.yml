@@ -1,0 +1,32 @@
+## YAML Template.
+
+---
+- name: Collect IP address data
+  hosts: ciscors
+  gather_facts: true
+  
+  vars:
+    cli:
+        host: "{{ inventory_hostname }}"
+        username: "{{ user }}"
+        password: "{{ pass }}"
+        transport: cli
+
+  tasks:
+
+  - name: capture show ip interface brief
+    raw: show ip interface brief | exclude unassigned
+  register: siib_text
+
+  - name: parse the output of "show ip interface brief"
+      cisco_ip_intf_facts_collect: output_text="{{ siib_text.stdout }}"
+      delegate_to: 127.0.0.1
+
+  - name: combine ip address facts and save as a global variable
+    cisco_ip_intf_facts_combine:
+      ipTable="{{ IPs }}"
+      hostname="{{ inventory_hostname }}"
+    delegate_to: 127.0.0.1
+
+  tags:
+    - collect

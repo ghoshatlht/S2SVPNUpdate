@@ -1,0 +1,38 @@
+## YAML Template.
+## YAML Template.
+---
+-  name: Commands from ansible
+   hosts: ciscors
+   strategy: debug
+   connection: local
+   gather_facts: True
+  
+  
+   vars:
+    cli:  
+        ciscoios: 'ciscors'
+        ciscoiosssh: 'ciscors_ssh'
+        localfile: 'C:/Users/sg05477/GNS3/images/IOS.bin'
+        remotefile: 'c7200-advipservicesk9-mz.152-4.S5.bin'
+
+   tasks:
+    -  name: Send commands list
+       ntc_show_command:
+         connection: ssh
+         template_dir: "/home/samya/s2svpn/PlaybookwithNTC/ntc-ansible/ntc-templates/templates"
+         platform: cisco_ios
+         provider: "{{ cli }}"
+         commands:
+           - interface fastEthernet 2/0
+           - no shutdown          
+           - end
+         host: "{{ inventory_hostname }}"  
+         username: "{{ user }}"
+         password: "{{ pass }}"
+         secret: "{{ secret }}"
+       register: result
+      
+    - debug: var=hostvars[inventory_hostname]
+    
+
+

@@ -1,0 +1,26 @@
+## YAML Template.
+---
+- hosts: ciscors
+  gather_facts: true
+  connection: local
+
+  vars:
+    ciscoios: 'cisco_ios'
+    ciscoiosssh: 'cisco_ios_ssh'
+    
+  tasks:
+   - name: show run
+     ios_command:
+       commands:
+         - ping 192.168.102.1
+         - ping 192.168.1.12
+       username: admin
+       password: admin
+       
+     register: config
+
+   - name: save output to /home/samya/s2svpn/s2soutput/Allroutertest
+     copy:
+       content: "{{ config.stdout[0] }}"
+       dest: "/home/samya/s2svpn/s2soutput/Allroutertest/show_ping_{{ inventory_hostname }}.txt"
+   

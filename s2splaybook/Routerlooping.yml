@@ -1,0 +1,34 @@
+## YAML Template.
+---
+- hosts: ciscors
+  connection: local
+  gather_facts: true
+
+  vars:
+    provider:
+      host: "{{ ansible_host }}"
+      username: "{{ user }}"
+      password: "{{ pass }}"
+      platform: "{{ cisco_ios }}"
+
+  tasks:
+  - name: ntc_show
+    ntc_show_command:
+      provider: "{{ provider }}"
+      connection: "{{ connection }}"
+      command: "{{ item }}"
+      secret: "{{ secret }}"
+    with_items:
+      - "{{ command }}"
+    register: results
+
+  - name: Clean loop output
+    set_fact:
+      clean_out: "{{ clean_out|default([]) + [item.response] }}"
+    with_items:
+      - "{{ results.results }}"
+    no_log: True
+
+  - name: Display information from 'show' output
+    debug: msg="{{ clean_out }}"
+    tags: DEBUG

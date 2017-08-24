@@ -1,0 +1,23 @@
+## YAML Template.
+---
+- name: Configure remote devices
+  hosts: ciscors
+  connection: local
+  gather_facts: true
+
+  vars:
+    cli:
+        username: "{{ user }}"
+        password: "{{ pass }}"
+        transport: cli
+
+  tasks:
+    - name: Configure interface settings
+      ios_config:
+        lines:
+          - description test interface
+          - ip address 172.168.100.10 255.255.255.0
+          - no shutdown
+        parents: interface FastEthernet2/0        
+        provider: "{{ cli }}"
+        

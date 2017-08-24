@@ -1,0 +1,97 @@
+interface: GigabitEthernet3/0
+    Crypto map tag: MYMAPR3R2, local addr 192.168.2.11
+
+   protected vrf: (none)
+   local  ident (addr/mask/prot/port): (0.0.0.0/0.0.0.0/1/0)
+   remote ident (addr/mask/prot/port): (0.0.0.0/0.0.0.0/1/0)
+   current_peer 192.168.3.12 port 500
+     PERMIT, flags={origin_is_acl,}
+    #pkts encaps: 0, #pkts encrypt: 0, #pkts digest: 0
+    #pkts decaps: 0, #pkts decrypt: 0, #pkts verify: 0
+    #pkts compressed: 0, #pkts decompressed: 0
+    #pkts not compressed: 0, #pkts compr. failed: 0
+    #pkts not decompressed: 0, #pkts decompress failed: 0
+    #send errors 0, #recv errors 0
+
+     local crypto endpt.: 192.168.2.11, remote crypto endpt.: 192.168.3.12
+     path mtu 1500, ip mtu 1500, ip mtu idb GigabitEthernet3/0
+     current outbound spi: 0x0(0)
+     PFS (Y/N): N, DH group: none
+
+     inbound esp sas:
+
+     inbound ah sas:
+
+     inbound pcp sas:
+
+     outbound esp sas:
+
+     outbound ah sas:
+
+     outbound pcp sas:
+
+     local crypto endpt.: 192.168.2.11, remote crypto endpt.: 192.168.3.11
+     path mtu 1500, ip mtu 1500, ip mtu idb GigabitEthernet3/0
+     current outbound spi: 0x0(0)
+     PFS (Y/N): N, DH group: none
+
+     inbound esp sas:
+
+     inbound ah sas:
+
+     inbound pcp sas:
+
+     outbound esp sas:
+
+     outbound ah sas:
+
+     outbound pcp sas:
+
+interface: GigabitEthernet4/0
+    Crypto map tag: MYMAPR3R2, local addr 192.168.3.11
+
+   protected vrf: (none)
+   local  ident (addr/mask/prot/port): (0.0.0.0/0.0.0.0/1/0)
+   remote ident (addr/mask/prot/port): (0.0.0.0/0.0.0.0/1/0)
+   current_peer 192.168.3.12 port 500
+     PERMIT, flags={origin_is_acl,}
+    #pkts encaps: 0, #pkts encrypt: 0, #pkts digest: 0
+    #pkts decaps: 0, #pkts decrypt: 0, #pkts verify: 0
+    #pkts compressed: 0, #pkts decompressed: 0
+    #pkts not compressed: 0, #pkts compr. failed: 0
+    #pkts not decompressed: 0, #pkts decompress failed: 0
+    #send errors 0, #recv errors 0
+
+     local crypto endpt.: 192.168.3.11, remote crypto endpt.: 192.168.3.12
+     path mtu 1500, ip mtu 1500, ip mtu idb GigabitEthernet4/0
+     current outbound spi: 0x0(0)
+     PFS (Y/N): N, DH group: none
+
+     inbound esp sas:
+
+     inbound ah sas:
+
+     inbound pcp sas:
+
+     outbound esp sas:
+
+     outbound ah sas:
+
+     outbound pcp sas:
+
+     local crypto endpt.: 192.168.3.11, remote crypto endpt.: 192.168.3.11
+     path mtu 1500, ip mtu 1500, ip mtu idb GigabitEthernet4/0
+     current outbound spi: 0x0(0)
+     PFS (Y/N): N, DH group: none
+
+     inbound esp sas:
+
+     inbound ah sas:
+
+     inbound pcp sas:
+
+     outbound esp sas:
+
+     outbound ah sas:
+
+     outbound pcp sas:

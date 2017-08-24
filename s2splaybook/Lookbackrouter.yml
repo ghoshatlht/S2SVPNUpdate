@@ -1,0 +1,31 @@
+## YAML Template.
+---
+- hosts: ciscors
+  gather_facts: true
+  connection: local
+  
+- name: Run traceroute commands
+     
+     
+
+  vars:
+    loopbacks: {
+    "R1_CE": "192.168.102.1",
+    "R2_CE": "192.168.1.11",
+    "R3_CE": "192.168.2.11",
+    }
+    host: "{{ inventory_hostname }}"
+    username: admin
+    password: admin
+    
+
+  tasks:
+
+    - name: run traceroute to every other host
+      raw: traceroute {{ item.value }} source Loopback0 probe 1 numeric
+      when: item.key != inventory_hostname
+      with_dict: loopbacks
+    register: trace_result  
+      
+      
+      

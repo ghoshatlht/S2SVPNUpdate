@@ -1,0 +1,39 @@
+## YAML Template.
+---
+- name: Configure remote devices
+  hosts: ciscors
+  connection: local
+  gather_facts: true
+
+  vars:
+    cli:
+        username: "{{ user }}"
+        password: "{{ pass }}"
+        ciscoios: 'ciscors'
+        ciscoiosssh: 'ciscors_ssh'
+        localfile: 'C:/Users/sg05477/GNS3/images/IOS.bin'
+        remotefile: 'c7200-advipservicesk9-mz.152-4.S5.bin'
+        transport: cli
+
+  tasks:
+    - name: Configure interface settings
+      ios_config:
+        lines:
+          - description test interface
+          - ip address 172.168.100.10 255.255.255.0
+          - no shutdown
+        parents: interface FastEthernet2/0        
+        provider: "{{ cli }}"
+        
+    - name: take backup
+      ios_config:
+       backup: yes
+       authorize: yes
+       provider: "{{ cli }}"  
+    #register: result
+     
+    #- name: save output to /home/samya/s2svpn/ConfigurationTask/backup
+      #copy:
+        #content: "{{ result.stdout[0] }}"
+        #dest: "/home/samya/s2svpn/ConfigurationTask/backup/Backup_{{ inventory_hostname }}.cfg" 
+  

@@ -1,0 +1,52 @@
+## YAML Template.
+## YAML Template.
+---
+- hosts: ciscors
+  gather_facts: true
+  connection: local
+
+
+  tasks:
+   - name: show run
+     ios_command:
+       commands:
+         - show run
+       username: admin
+       password: admin
+       
+     register: config
+
+   - name: save output to /home/samya/s2svpn/s2soutput/Allroutertest
+     copy:
+       content: "{{ config.stdout[0] }}"
+       dest: "/home/samya/s2svpn/s2soutput/Allroutertest/show_run_{{ inventory_hostname }}.txt"
+       
+       
+  tasks:
+   - name: configure login banner
+     
+     ios_banner:
+       banner: login
+       
+       username: admin
+       password: admin
+       text: |
+          ***************************************************************************
+
+                 ||        ||
+                 ||        ||             Welcome to Devoteam GmbH 
+                ||||      ||||            Weiterstadt, Germany
+            ..:||||||:..:||||||:..        03.08.2017-Samya Ghosh
+                                          we are using Cisco c7200 Router
+
+                     NOTICE TO USERS of NSO Showcase project
+
+          UNAUTHORIZED ACCESS TO THIS NETWORK DEVICE IS PROHIBITED.
+          You must have explicit permission to access or configure this
+          device.  All activities performed on this device are logged and
+          violations of this policy may result in disciplinary action.
+
+          ***************************************************************************     
+       
+
+

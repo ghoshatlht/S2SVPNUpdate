@@ -1,0 +1,66 @@
+## YAML Template.
+---
+- hosts: ciscors
+  connection: local
+  gather_facts: false
+
+  vars:
+    cli:
+        username: "{{ user }}"
+        password: "{{ pass }}"
+        secret: "{{ secret }}"
+        ciscoios: 'ciscors'
+        ciscoiosssh: 'ciscors_ssh'
+        localfile: 'C:/Users/sg05477/GNS3/images/IOS.bin'
+        remotefile: 'c7200-advipservicesk9-mz.152-4.S5.bin'
+        transport: cli
+
+  tasks:
+      
+    - debug:
+        msg : "1: {{ user }}" 
+    - debug:
+        msg : "2: {{ pass }}"
+    - debug:
+        msg : "3: {{ secret }}"
+    - name: Configure VPN
+      ios_config:
+        provider: "{{ cli }}"
+        lines:
+          - crypto isakmp policy 10          
+          - authentication pre-share
+          - encryption 3des
+          - group 2
+          - hash md5
+          - lifetime 86400
+          - exit
+          - crypto isakmp key admin address 192.168.2.12
+          - crypto ipsec transform-set TRANSR1R3 esp-3des esp-sha-hmac
+          - exit
+          - access-list 100 permit icmp any any
+          - crypto map MYMAPR1R3 10 ipsec-isakmp
+          - match address 100
+          - set peer 192.168.2.12
+          - set pfs group2
+          - set transform-set TRANSR1R3
+          - set security-association lifetime seconds 86400
+          - exit
+          - interface GigabitEthernet 3/0
+          - crypto map MYMAPR1R3
+          - end
+        
+        
+        
+    - name: Verify Configurations
+      ios_command:
+        commands:
+          - show crypto ISAKMP SA  
+          - show crypto ipsec sa
+        provider: "{{ cli }}" 
+      register: config
+      
+    - name: save output to /home/samya/s2svpn/ConfigurationTask/VPN
+      copy:
+        content: "{{ config.stdout[0] }}"
+        dest: "/home/samya/s2svpn/ConfigurationTask/VPN/VPN_details{{ inventory_hostname }}.txt"
+

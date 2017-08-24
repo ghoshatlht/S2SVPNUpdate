@@ -1,0 +1,37 @@
+## YAML Template.
+---
+
+- name: Inbound command modification
+  hosts: ciscors
+  strategy: debug
+  connection: local
+  gather_facts: true
+  
+  
+  vars:
+       ciscoios: 'ciscors'
+       ciscoiosssh: 'ciscors_ssh'
+       localfile: 'C:/Users/sg05477/GNS3/images/IOS.bin'
+       remotefile: 'c7200-advipservicesk9-mz.152-4.S5.bin'
+       commands_file:  /home/samya/s2svpn/PlaybookwithNTC/send_commands.txt
+        
+        
+  tasks:
+   -  name: Send commands from file
+      ntc_config_command:
+        connection: ssh
+        platform: cisco_ios 
+        provider: "{{ vars }}"       
+        commands_file: "{{ commands_file }}"        
+        host: "{{ inventory_hostname }}"
+        username: "{{ user }}"
+        password: "{{ pass }}"
+        secret: "{{ secret }}" 
+      
+        
+   - debug: var=hostvars[inventory_hostname]
+   #- debug: var=hostvars[user]
+   
+   #- debug: var=result.response
+   #- debug: var=result.response.stdout      
+      

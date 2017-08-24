@@ -1,0 +1,21 @@
+## YAML Template.
+---
+- hosts: 192.168.3.11
+  gather_facts: true
+  connection: local
+
+
+  tasks:
+   - name: show run
+     ios_command:
+       commands:
+         - show run
+       username: admin
+       password: admin
+       
+     register: config
+
+   - name: save output to /home/samya/s2svpn/s2soutput
+     copy:
+       content: "{{ config.stdout[0] }}"
+       dest: "/home/samya/s2svpn/s2soutput/show_run_{{ inventory_hostname }}.txt"

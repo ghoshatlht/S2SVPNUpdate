@@ -1,0 +1,52 @@
+## YAML Template.
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars:
+
+    rabbitmq_auth_user: "guest"
+    rabbitmq_auth_password: "guest"
+    rabbimq_rest_api_url: "http://127.0.0.1:15672/api"
+    rabbitq_vhost_sensu: "sensu"
+    rabbitq_user_sensu: "sensu"
+
+    rabbitq_user_sensu_request_body:
+      password: "test"
+      tags: ""
+
+    rabbitmq_permissions_sensu_request_body:
+      configure: ".*"
+      write: ".*"
+      read: ".*"
+      
+      
+  tasks:
+     - name: check if sensu vhost is present
+       uri:
+         url: "{{ rabbimq_rest_api_url }}/vhosts/{{ rabbitq_vhost_sensu }}"
+         method: GET
+         user: "{{ rabbitmq_auth_user }}"
+         password: "{{ rabbitmq_auth_password }}"
+         force_basic_auth: yes
+         status_code: 200,404
+         timeout: 10
+       register: request_vhost
+
+   - name: debug
+     debug:
+        var: request_vhost
+
+   - name: create vhost
+     uri:
+       url: "{{ rabbimq_rest_api_url }}/vhosts/{{ rabbitq_vhost_sensu }}"
+       method: PUT
+       HEADER_Content-Type: "application/json"
+       user: "{{ rabbitmq_auth_user }}"
+       password: "{{ rabbitmq_auth_password }}"
+       force_basic_auth: yes
+       status_code: 204
+       timeout: 10
+     when:
+        - request_vhost.status == 404

@@ -1,0 +1,21 @@
+## YAML Template.
+---
+- name: Configure remote devices
+  hosts: 192.168.1.12
+  connection: local
+  gather_facts: true
+
+  vars:
+    cli:
+        username: "{{ user }}"
+        password: "{{ pass }}"
+        transport: cli
+
+  tasks:
+    - name: Configure interface settings
+      ios_config:
+        lines:
+        parents: FastEthernet1/1 
+          - no shutdown
+          - ip address 172.100.1.10 255.255.255.0        
+        provider: "{{ cli }}"

@@ -1,0 +1,25 @@
+## YAML Template.
+---
+
+- name: Run IOS ommands on remote devices
+  hosts: ciscors
+  connection: local
+  gather_facts: True
+
+  vars:
+    cli:
+        host: "{{ inventory_hostname }}"
+        username: "{{ user }}"
+        password: "{{ pass }}"
+        transport: cli
+        
+  tasks:
+    - name: Run commands
+      ios_command:
+        commands: show ip traffic
+        provider: "{{ cli }}"
+        interval: 2      
+  
+      register: outputtraffic
+    - local_action: copy content="{{ outputtraffic.stdout }}" dest="/home/samya/s2svpn/s2soutput/Runningconfigoutput/outputtraffic.txt"
+    - local_action: copy content="{{ outputtraffic.stdout }}" dest="/home/samya/s2svpn/s2soutput/Runningconfigoutput/outputtraffic.doc"

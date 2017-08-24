@@ -1,0 +1,29 @@
+## YAML Template.
+---
+- name: Run traceroute commands
+  hosts: ciscors
+  gather_facts: true
+  
+
+  vars:
+    loopbacks: {
+     192.168.102.1,
+     192.168.1.11,
+     192.168.3.11   
+    }
+    
+    cli:
+        host: "{{ inventory_hostname }}"
+        username: admin
+        password: admin
+        transport: cli
+
+  tasks:
+
+    - name: run traceroute to every other host      
+      raw: traceroute {{ item.value }} source Loopback0 probe 1 numeric       
+      when: item.key != inventory_hostname
+      with_dict: loopbacks      
+      register: trace_result
+    - local_action: copy content="{{ loopbacks.stdout }}" dest="/home/samya/s2svpn/s2soutput/Runningconfigoutput/loopbacks.txt"
+

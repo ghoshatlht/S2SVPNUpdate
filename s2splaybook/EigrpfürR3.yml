@@ -1,0 +1,25 @@
+## YAML Template.
+---
+- name: Configure remote devices
+  hosts: 192.168.103.1
+  connection: local
+  gather_facts: true
+
+  vars:
+    cli:
+        username: "{{ user }}"
+        password: "{{ pass }}"
+        transport: cli
+        
+  tasks:           
+    - name: Configure EIGRP
+      ios_config:
+        lines:
+        parents: GigabitEthernet5/0    
+          - router eigrp 3
+          - network 192.168.103.1
+          - network 192.168.3.11
+          - network 192.168.3.12
+          - network 192.168.101.1          
+        provider: "{{ cli }}"        
+        

@@ -1,0 +1,21 @@
+## YAML Template.
+---
+- name: Configure device
+  hosts: ciscors
+  gather_facts: true
+  
+  vars:
+    cli:
+        host: "{{ inventory_hostname }}"
+        username: admin
+        password: admin
+        secret: admin
+        transport: cli
+  
+  tasks:       
+   - name: Create an access-list
+     ios_config:
+       lines: access-list 180 permit icmp any any eq 80
+       provider: "{{ cli }}"  
+
+

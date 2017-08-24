@@ -1,0 +1,54 @@
+## YAML Template.
+---
+- name: Configure remote devices
+  hosts: ciscors
+  connection: local
+  gather_facts: true
+
+  vars:
+    cli:
+        username: "{{ user }}"
+        password: "{{ pass }}"
+        secret: "{{ pass }}"
+        ciscoios: 'ciscors'
+        ciscoiosssh: 'ciscors_ssh'
+        localfile: 'C:/Users/sg05477/GNS3/images/IOS.bin'
+        remotefile: 'c7200-advipservicesk9-mz.152-4.S5.bin'
+        transport: cli
+
+  tasks:
+    - name: Configure interface settings
+      ios_config:
+        lines:
+          - description test interface
+          - ip address 172.168.1.1 255.255.255.0
+          - no shutdown
+        parents: interface FastEthernet1/1        
+        provider: "{{ cli }}"
+        
+    - name: load new acl into device
+      ios_config:
+        lines:
+          - 10 permit ip host 1.1.1.1 any log
+          - 20 permit ip host 2.2.2.2 any log
+          - 30 permit ip host 3.3.3.3 any log
+          - 40 permit ip host 4.4.4.4 any log
+          - 50 permit ip host 5.5.5.5 any log
+        parents: ip access-list extended test
+        before: no ip access-list extended test
+        match: exact 
+        provider: "{{ cli }}"
+        
+        
+        
+    #- name: check the startup-config against the running-config
+     # ios_config:
+      #  diff_against: startup
+       # diff_ignore_lines:
+        #  - ntp clock .*
+        #provider: "{{ cli }}"
+
+    - name: save running to startup when modified
+      ios_config:
+        save_when: modified    
+        provider: "{{ cli }}"

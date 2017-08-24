@@ -1,0 +1,28 @@
+## YAML Template.
+---
+- hosts: ciscors
+  connection: local
+  strategy: debug
+  gather_facts: true
+  
+  tasks:
+   - name: Maker a Call
+     uri: 
+      url: http://localhost/api/v1/ping/
+      #url: http://localhost:8080
+      method: GET
+      method: HEAD
+      host: "{{ inventory_hostname }}"  
+      username: "{{ user }}"
+      password: "{{ pass }}"
+      secret: "{{ secret }}"
+      force_basic_auth: yes
+      return_content: yes
+     register: result
+   - debug: var=hostvars[inventory_hostname] 
+   #- debug: var=result.response[user]
+
+   #- name: save output to /home/samya/s2svpn/S2SResttest
+    # copy:
+       #content: "{{ result.stdout[0] }}"
+       #dest: "/home/samya/s2svpn/S2SResttest/show_data_{{ inventory_hostname }}.txt"

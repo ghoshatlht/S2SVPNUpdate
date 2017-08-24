@@ -1,0 +1,163 @@
+Building configuration...
+
+Current configuration : 2037 bytes
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname R1_CE
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$fr7F$3lSjAvXEG6Y7cPEVQBAkQ/
+!
+aaa new-model
+!
+!
+aaa authentication login default local
+aaa authorization exec default local 
+!
+!
+!
+!
+!
+aaa session-id common
+no ip icmp rate-limit unreachable
+ip cef
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name frankfurt.local
+no ipv6 cef
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+username frankfurt privilege 15 password 7 01030717485A
+username ******** privilege 15 password 7 0005170B0D55
+!
+!
+ip tcp synwait-time 5
+ip scp server enable
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ ip address 192.168.103.2 255.255.255.0
+ duplex full
+!
+interface FastEthernet1/0
+ no ip address
+ shutdown
+ speed auto
+ duplex auto
+!
+interface FastEthernet1/1
+ no ip address
+ shutdown
+ speed auto
+ duplex auto
+!
+interface FastEthernet2/0
+ no ip address
+ shutdown
+ speed auto
+ duplex auto
+!
+interface FastEthernet2/1
+ no ip address
+ shutdown
+ speed auto
+ duplex auto
+!
+interface GigabitEthernet3/0
+ ip address 192.168.2.12 255.255.255.0
+ negotiation auto
+!
+interface GigabitEthernet4/0
+ ip address 192.168.1.12 255.255.255.0
+ negotiation auto
+!
+interface GigabitEthernet5/0
+ ip address 192.168.102.1 255.255.255.0
+ negotiation auto
+!
+interface Ethernet6/0
+ no ip address
+ shutdown
+ duplex full
+!
+interface Ethernet6/1
+ no ip address
+ shutdown
+ duplex full
+!
+interface Ethernet6/2
+ no ip address
+ shutdown
+ duplex full
+!
+interface Ethernet6/3
+ no ip address
+ shutdown
+ duplex full
+!
+!
+router eigrp 1
+ network 192.168.1.0
+ network 192.168.2.0
+ network 192.168.102.0
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+ stopbits 1
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+ stopbits 1
+line vty 0 4
+ exec-timeout 60 0
+ logging synchronous
+ transport input ssh
+!
+!
+end

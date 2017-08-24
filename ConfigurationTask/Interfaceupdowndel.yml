@@ -1,0 +1,53 @@
+## YAML Template.
+---
+#- name: Interface Control
+- hosts: ciscors
+  connection: local
+  gather_facts: true
+
+  vars:
+    cli:
+      username: "{{ user }}"
+      password: "{{ pass }}"
+      transport: cli
+
+  tasks:
+    - name: xxx
+      debug:
+        msg: "hallohallo"
+
+    - name: Display all variables/facts known for a host
+      debug:
+        msg: "hallo"
+        #var: user
+        #verbosity: 4
+
+
+
+
+
+
+
+
+#  - name: x 
+#    ios_interface:
+#      name: FastEthernet1/1
+#      description: test-interface
+#      speed: 100
+#      duplex: half
+#      mtu: 512
+
+   # - name: remove interface
+    #  ios_interface:
+     #   name: Loopback9
+      #  state: absent
+
+   # - name: make interface up
+    #  ios_interface:
+     #   name: FastEthernet1/1
+      #  state: up
+
+   # - name: make interface down
+    #  ios_interface:
+     #   name: FastEthernet1/1
+      #  state: down
